@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск отелей</title>
+    <link rel="stylesheet" href="../static/styles/index.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">НАЙТИ ОТЕЛИ</div>
+            <ul>
+                <li><a href="#">ДОМА</a></li>
+                <li><a href="#">О НАС</a></li>
+                <li><a href="#">УСЛУГИ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="search-form">
+        <input type="text" placeholder="город">
+        <input type="date" placeholder="даты">
+        <input type="text" placeholder="Титы">
+        <button>ПОИСК</button>
+    </section>
+
+    <section class="popular-housing">
+        <h2>ПОПУЛЯРНЫЕ ОТЕЛИ</h2>
+        <div class="filters">
+            <h4>Фильтры</h4>
+            <ul>
+                <li class="active">Цена</li>
+                <li>Рейтинг</li>
+                <li>Тип жилья</li>
+            </ul>
+        </div>
+        <div class="housing-cards">
+            <div class="card" data-price="100">
+                <img src="hotel1.jpg" alt="Бутик-отель Санкт-Петербург">
+                <h3>Бутик-отель</h3>
+                <p>Санкт-Петербург</p>
+                <span>⭐⭐⭐⭐</span> 4.7
+            </div>
+            <div class="card" data-price="150">
+                <img src="hotel2.jpg" alt="Гостиница «Дюна» На рых">
+                <h3>Гостиница «Дюна»</h3>
+                <p>На рых</p>
+                <span>⭐⭐⭐⭐</span> 4.5
+                <p class="price">€100 /м</p>
+            </div>
+            <div class="card" data-price="90">
+                <img src="hotel3.jpg" alt="Отель «Обита» Москва">
+                <h3>Отель «Обита»</h3>
+                <p>Москва</p>
+                <span>⭐⭐⭐⭐</span> 4.2
+                <p class="price">€90</p>
+            </div>
+        </div>
+    </section>
+    <script src="../static/scripts/script.js"></script>
+</body>
+</html>
