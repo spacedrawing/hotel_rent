@@ -1,64 +1,72 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поиск отелей</title>
-    <link rel="stylesheet" href="../static/styles/index.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Аренда Отелей</title>
+    <link rel="stylesheet" href="../static/styles/index.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="nav-links">
+          <a href="#">ДОМА</a>
+          <a href="#">О НАС</a>
+          <a href="#">УСЛУГИ</a>
+        </div>
+      </nav>
+      <div class="hero">
+        <h1>НАЙТИ ОТЕЛИ</h1>
+        <form class="search-form">
+            <input type="text" id="city" name="city" placeholder="город">
 
-    <header>
-        <nav>
-            <div class="logo">НАЙТИ ОТЕЛИ</div>
-            <ul>
-                <li><a href="#">ДОМА</a></li>
-                <li><a href="#">О НАС</a></li>
-                <li><a href="#">УСЛУГИ</a></li>
-            </ul>
-        </nav>
+            <div>
+              <label for="checkin" class="form-label">Дата заезда</label>
+              <input type="date" id="checkin" name="checkin">
+            </div>
+          
+            <div>
+              <label for="checkout" class="form-label">Дата выезда</label>
+              <input type="date" id="checkout" name="checkout">
+            </div>
+          
+            <button type="submit">ПОИСК</button>
+        </form>
+      </div>
     </header>
+    <main class="main">
+      <aside class="sorting">
+        <h2>СОРТИРОВКА</h2>
+        <select name="sort" id="sort-options">
+          <option value="price-asc">По цене: от низкой к высокой</option>
+          <option value="price-desc">По цене: от высокой к низкой</option>
+          <option value="rating-asc">По рейтингу: от низкого к высокому</option>
+          <option value="rating-desc">
+            По рейтингу: от высокого к низкого
+          </option>
+        </select>
+      </aside>
 
-    <section class="search-form">
-        <input type="text" placeholder="город">
-        <input type="date" placeholder="даты">
-        <input type="text" placeholder="Cколько человек">
-        <button>ПОИСК</button>
-    </section>
-
-    <section class="popular-housing">
+      <section class="popular">
         <h2>ПОПУЛЯРНЫЕ ОТЕЛИ</h2>
-        <div class="filters">
-            <h4>Фильтры</h4>
-            <ul>
-                <li class="active">Цена</li>
-                <li>Рейтинг</li>
-                <li>Тип жилья</li>
-            </ul>
+        <div class="cards" id="hotel-cards">
+          <div class="card">
+            <img src="" alt="Бутик-отель" />
+            <h3>Бутик-отель</h3>
+            <p>Санкт-Петербург</p>
+            <p class="price">€90</p>
+            <p class="rating">★ 4.7</p>
+          </div>
+          <div class="card">
+            <img src="" alt="Мне лень-писать название" />
+            <h3>Мега крутой отель</h3>
+            <p>Санкт-Петербург</p>
+            <p class="price">€60</p>
+            <p class="rating">★ 4.5</p>
+          </div>
         </div>
-        <div class="housing-cards">
-            <div class="card" data-price="100">
-                <img src="hotel1.jpg" alt="Бутик-отель Санкт-Петербург">
-                <h3>Бутик-отель</h3>
-                <p>Санкт-Петербург</p>
-                <span>⭐⭐⭐⭐</span> 4.7
-            </div>
-            <div class="card" data-price="150">
-                <img src="hotel2.jpg" alt="Гостиница «Дюна» На реке">
-                <h3>Гостиница «Дюна»</h3>
-                <p>На реке</p>
-                <span>⭐⭐⭐⭐</span> 4.5
-                <p class="price">€100 /м</p>
-            </div>
-            <div class="card" data-price="90">
-                <img src="hotel3.jpg" alt="Отель «Обита» Москва">
-                <h3>Отель «Обита»</h3>
-                <p>Москва</p>
-                <span>⭐⭐⭐⭐</span> 4.2
-                <p class="price">€90</p>
-            </div>
-        </div>
-    </section>
-    <script src="../static/scripts/script.js"></script>
-</body>
+      </section>
+    </main>
+    <script></script>
+  </body>
 </html>
