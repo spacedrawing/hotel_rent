@@ -13,17 +13,19 @@
 
       <div class="top-section">
         <div class="hotel-img">
-          <img src="https://viahotel.ru/pic/%D0%BD%D0%BE%D0%B2_(1).jpg" alt="Hotel Room" />
+          <button class="carousel-btn prev" onclick="prevImage()">‹</button>
+          <img id="carousel-image" src="{{ images[0] }}" alt="Hotel Room" />
+          <button class="carousel-btn next" onclick="nextImage()">›</button>
         </div>
 
         <div class="booking-panel">
           <h3>Забронировать</h3>
-          <div class="input-group slide-up">
+          <div class="input-group">
             <label for="checkin">Дата заезда</label>
             <input type="date" id="checkin" name="checkin" />
           </div>
 
-          <div class="input-group slide-up">
+          <div class="input-group">
             <label for="checkout">Дата выезда</label>
             <input type="date" id="checkout" name="checkout" />
           </div>
@@ -65,5 +67,9 @@
         </div>
       </div>
     </div>
+    <script>
+      window.images = {{ images | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
   </body>
 </html>
