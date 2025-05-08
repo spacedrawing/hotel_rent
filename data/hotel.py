@@ -6,5 +6,10 @@ from .db_session import SqlAlchemyBase
 
 class Hotel(SqlAlchemyBase):
     __tablename__ = 'hotel'
-
-    
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    image = sqlalchemy.Column(sqlalchemy.String)
+    alternative = sqlalchemy.Column(sqlalchemy.String)
+    main_text = sqlalchemy.Column(sqlalchemy.String)
+    city = sqlalchemy.Column(sqlalchemy.String)
+    price = sqlalchemy.Column(sqlalchemy.String)
+    rating = sqlalchemy.Column(sqlalchemy.String)
