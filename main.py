@@ -1,18 +1,21 @@
+import json
+import os
+
 from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    list_hotel_cards = [json.loads(i) for i in open('data/hotel_cards.txt', encoding="utf-8").read().split('\n')]
+    print(list_hotel_cards)
+    return render_template("index.html", list_hotel_cards=list_hotel_cards)
 
 @app.route("/hotel_menu")
 def hotel_menu():
-    images = [
-        url_for('static', filename='images/room1.png'),
-        url_for('static', filename='images/room2.jpg'),
-        url_for('static', filename='images/room3.jpg'),
-    ]
+    files = os.listdir(path=".")
+    images = [url_for('static', filename=f'images/room{i}.jpg') for i in range(1,len(files))]
+
     return render_template("hotel_menu.html", images=images)
 
 def main():
