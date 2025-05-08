@@ -13,8 +13,10 @@ def index():
 
 @app.route("/hotel_menu")
 def hotel_menu():
-    files = os.listdir(path=".")
-    images = [url_for('static', filename=f'images/room{i}.jpg') for i in range(1,len(files))]
+    files = os.listdir(path="static/images")
+    print(files)
+    images = [url_for('static', filename=f'images/room{i}.jpg') for i in range(1, len(files) + 1)]
+    print(images)
 
     return render_template("hotel_menu.html", images=images)
 
