@@ -1,15 +1,20 @@
 import json
 import os
 from data import db_session
-
 from flask import Flask, render_template, url_for
+from data.hotel import Hotel
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+
 
 @app.route("/")
 def index():
+    list_hotel_cards = Hotel()
     list_hotel_cards = [json.loads(i) for i in open('data/hotel_cards.txt', encoding="utf-8").read().split('\n')]
+
     return render_template("index.html", list_hotel_cards=list_hotel_cards)
+
 
 @app.route("/hotel_menu")
 def hotel_menu():
@@ -18,9 +23,13 @@ def hotel_menu():
 
     return render_template("hotel_menu.html", images=images)
 
+
 def main():
-    db_session.global_init("db/test0.sqlite")
+    db_session.global_init("db/hotel_data.sqlite")
     app.run(host="127.0.0.1", port=8080, debug=True)
+
 
 if __name__ == "__main__":
     main()
+
+    db_sess = db_session.create_session()
