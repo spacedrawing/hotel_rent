@@ -64,8 +64,45 @@
           <li>Ресторан</li>
         </ul>
       </div>
-
       <div class="reviews">
+        <div class="leave-review">
+          <h2>Оставить отзыв</h2>
+          <form class="review-form" method="post">
+            <label for="review-text">Ваш отзыв</label>
+            <textarea
+              id="review-text"
+              name="text"
+              rows="4"
+              placeholder="Напишите свой отзыв..."
+            ></textarea>
+
+            <label>Оценка</label>
+            <div class="star-rating">
+              <input type="radio" name="rating" id="star5" value="5" /><label
+                for="star5"
+                >★</label
+              >
+              <input type="radio" name="rating" id="star4" value="4" /><label
+                for="star4"
+                >★</label
+              >
+              <input type="radio" name="rating" id="star3" value="3" /><label
+                for="star3"
+                >★</label
+              >
+              <input type="radio" name="rating" id="star2" value="2" /><label
+                for="star2"
+                >★</label
+              >
+              <input type="radio" name="rating" id="star1" value="1" /><label
+                for="star1"
+                >★</label
+              >
+            </div>
+
+            <button type="submit" class="submit-review">Отправить отзыв</button>
+          </form>
+        </div>
         <div class="review">
           <h2>Отзывы</h2>
           <div class="review-box">
