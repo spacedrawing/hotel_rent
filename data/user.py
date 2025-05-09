@@ -17,8 +17,7 @@ class User(SqlAlchemyBase):
                               index=True, unique=True, nullable=True, default='')
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
     creation_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
-
-    reviews = orm.relationship("User", back_populates='user') #Это то что ты сказал.
+    reviews = orm.relationship("Review", back_populates="user")
 
     def __repr__(self):
         return f"<User> {self.id} {self.surname} {self.name}"
