@@ -7,8 +7,8 @@ from .db_session import SqlAlchemyBase
 class User(SqlAlchemyBase):
     __tablename__ = 'user'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    patronymic = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     surname = sqlalchemy.Column(sqlalchemy.String)
+    patronymic = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     name = sqlalchemy.Column(sqlalchemy.String)
     age = sqlalchemy.Column(sqlalchemy.Integer)
     # address = sqlalchemy.Column(sqlalchemy.String, nullable=True, default='SPB')
