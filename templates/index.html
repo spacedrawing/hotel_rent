@@ -51,7 +51,7 @@
         <h2>ПОПУЛЯРНЫЕ ОТЕЛИ</h2>
         <div class="cards" id="hotel-cards">
           {% for hotel_card in list_hotel_cards %}
-            <a href="hotel_menu" class="card-link">
+            <a href="{{ url_for('hotel_menu', hotel_id=hotel_card['id']) }}" class="card-link">
               <div class="card">
                 <img src={{ hotel_card["image"] }} alt={{ hotel_card["alternative"] }} />
                 <h3>{{ hotel_card["main_text"] }}</h3>

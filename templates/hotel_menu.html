@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Гранд Отель</title>
+    <title>{{ hotel.main_text }}</title>
     <link rel="stylesheet" href="../static/styles/hotel_menu.css" />
   </head>
   <body>
@@ -17,8 +17,8 @@
       </nav>
     </header>
     <div class="container">
-      <h1>ГРАНД ОТЕЛЬ</h1>
-      <div class="subheading">Город, ул. Примерная, 10</div>
+      <h1>{{ hotel['main_text'] }}</h1>
+      <div class="subheading">{{ hotel["city"] }}</div>
 
       <div class="top-section">
         <div class="hotel-img">

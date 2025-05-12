@@ -16,12 +16,18 @@ def index():
     return render_template("index.html", list_hotel_cards=list_hotel_cards)
 
 
-@app.route("/hotel_menu")
-def hotel_menu():
+@app.route("/hotel_menu/<int:hotel_id>")
+def hotel_menu(hotel_id):
+    list_hotel_cards = [json.loads(i) for i in open('data/hotel_cards.txt', encoding="utf-8").read().split('\n') if i]
+    hotel_data = next((h for h in list_hotel_cards if h['id'] == hotel_id), None)
+
+    if not hotel_data:
+        return "Hotel not found", 404
+
     files = os.listdir(path="static/images")
     images = [url_for('static', filename=f'images/room{i}.jpg') for i in range(1, len(files) + 1)]
 
-    return render_template("hotel_menu.html", images=images)
+    return render_template("hotel_menu.html", hotel=hotel_data, images=images)
 
 
 def main():
