@@ -8,6 +8,7 @@ class Review(SqlAlchemyBase):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     text = sqlalchemy.Column(sqlalchemy.String, nullable=True, default='')
     rating = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
+    username = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("user.id"))
     user = orm.relationship("User", back_populates='reviews')
     hotel_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("hotel.id"))
