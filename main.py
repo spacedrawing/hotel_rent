@@ -26,10 +26,14 @@ def index():
 
 @app.route("/hotel_menu/<index_hotel>")
 def hotel_menu(index_hotel):
+    db_sess = db_session.create_session()
     files = os.listdir(path="static/images_1")
     images = [url_for('static', filename=f'images_{index_hotel}/room{i}.jpg') for i in range(1, len(files) + 1)]
-
-    return render_template("hotel_menu.html", images=images, index_hotel=index_hotel)
+    hotel_card = db_sess.query(Hotel).filter(Hotel.id == index_hotel).first().__dict__
+    conveniences = hotel_card["conveniences"].split(';')
+    reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()]
+    return render_template("hotel_menu.html", images=images, index_hotel=index_hotel, hotel_card=hotel_card,
+                           conveniences=conveniences, reviews=reviews)
 
 
 def main():

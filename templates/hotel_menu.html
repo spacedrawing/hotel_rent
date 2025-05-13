@@ -1,121 +1,119 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Гранд Отель</title>
-    <link rel="stylesheet" href="../static/styles/hotel_menu.css" />
-  </head>
-  <body>
-    <header>
-      <nav class="navbar">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{{ hotel_card["title"] }}</title>
+    <link rel="stylesheet" href="../static/styles/hotel_menu.css"/>
+</head>
+<body>
+<header>
+    <nav class="navbar">
         <div class="nav-links">
-          <a href="/">ГЛАВНАЯ</a>
-          <a href="#">О НАС</a>
-          <a href="#">УСЛУГИ</a>
+            <a href="/">ГЛАВНАЯ</a>
+            <a href="#">О НАС</a>
+            <a href="#">УСЛУГИ</a>
         </div>
-      </nav>
-    </header>
-    <div class="container">
-      <h1>ГРАНД ОТЕЛЬ</h1>
-      <div class="subheading">Город, ул. Примерная, 10</div>
+    </nav>
+</header>
+<div class="container">
+    <h1>{{ hotel_card["title"] }}</h1>
+    <div class="subheading">{{ hotel_card["city"] }}, ул. Примерная, 10</div>
 
-      <div class="top-section">
+    <div class="top-section">
         <div class="hotel-img">
-          <button class="carousel-btn prev" onclick="prevImage()">‹</button>
-          <img id="carousel-image" src="{{ images[0] }}" alt="Hotel Room" />
-          <button class="carousel-btn next" onclick="nextImage()">›</button>
+            <button class="carousel-btn prev" onclick="prevImage()">‹</button>
+            <img id="carousel-image" src="{{ images[0] }}" alt="Hotel Room"/>
+            <button class="carousel-btn next" onclick="nextImage()">›</button>
         </div>
 
         <div class="booking-panel">
-          <h3>Забронировать</h3>
-          <div class="input-group">
-            <label for="checkin">Дата заезда</label>
-            <input type="date" id="checkin" name="checkin" />
-          </div>
-
-          <div class="input-group">
-            <label for="checkout">Дата выезда</label>
-            <input type="date" id="checkout" name="checkout" />
-          </div>
-          <div class="price">
-            € 200
-            <span style="font-weight: normal; font-size: 16px">за ночь</span>
-          </div>
-          <button class="book-btn">Забронировать</button>
-        </div>
-      </div>
-
-      <div class="description">
-        <h2>Описание</h2>
-        <p>
-          Отличное расположение, комфорт во всем. Вы захотите остаться здесь
-          НАВЕЧНО.
-        </p>
-      </div>
-
-      <div class="amenities">
-        <h2>Удобства</h2>
-        <ul>
-          <li>Бесплатный Wi-Fi</li>
-          <li>Парковка</li>
-          <li>Бассейн</li>
-          <li>Кондиционерный зал</li>
-          <li>Ресторан</li>
-        </ul>
-      </div>
-      <div class="reviews">
-        <div class="leave-review">
-          <h2>Оставить отзыв</h2>
-          <form class="review-form" method="post">
-            <label for="review-text">Ваш отзыв</label>
-            <textarea
-              id="review-text"
-              name="text"
-              rows="4"
-              placeholder="Напишите свой отзыв..."
-            ></textarea>
-
-            <label>Оценка</label>
-            <div class="star-rating">
-              <input type="radio" name="rating" id="star5" value="5" /><label
-                for="star5"
-                >★</label
-              >
-              <input type="radio" name="rating" id="star4" value="4" /><label
-                for="star4"
-                >★</label
-              >
-              <input type="radio" name="rating" id="star3" value="3" /><label
-                for="star3"
-                >★</label
-              >
-              <input type="radio" name="rating" id="star2" value="2" /><label
-                for="star2"
-                >★</label
-              >
-              <input type="radio" name="rating" id="star1" value="1" /><label
-                for="star1"
-                >★</label
-              >
+            <h3>Забронировать</h3>
+            <div class="input-group">
+                <label for="checkin">Дата заезда</label>
+                <input type="date" id="checkin" name="checkin"/>
             </div>
 
-            <button type="submit" class="submit-review">Отправить отзыв</button>
-          </form>
+            <div class="input-group">
+                <label for="checkout">Дата выезда</label>
+                <input type="date" id="checkout" name="checkout"/>
+            </div>
+            <div class="price">
+                € 200
+                <span style="font-weight: normal; font-size: 16px">за ночь</span>
+            </div>
+            <button class="book-btn">Забронировать</button>
+        </div>
+    </div>
+
+    <div class="description">
+        <h2>Описание</h2>
+        <p>
+            {{ hotel_card["description"] }}
+        </p>
+    </div>
+
+    <div class="amenities">
+        <h2>Удобства</h2>
+        <ul>
+            {% for convenience in conveniences %}
+            <li>{{ convenience }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="reviews">
+        <div class="leave-review">
+            <h2>Оставить отзыв</h2>
+            <form class="review-form" method="post">
+                <label for="review-text">Ваш отзыв</label>
+                <textarea
+                        id="review-text"
+                        name="text"
+                        rows="4"
+                        placeholder="Напишите свой отзыв..."
+                ></textarea>
+
+                <label>Оценка</label>
+                <div class="star-rating">
+                    <input type="radio" name="rating" id="star5" value="5"/><label
+                        for="star5"
+                >★</label
+                >
+                    <input type="radio" name="rating" id="star4" value="4"/><label
+                        for="star4"
+                >★</label
+                >
+                    <input type="radio" name="rating" id="star3" value="3"/><label
+                        for="star3"
+                >★</label
+                >
+                    <input type="radio" name="rating" id="star2" value="2"/><label
+                        for="star2"
+                >★</label
+                >
+                    <input type="radio" name="rating" id="star1" value="1"/><label
+                        for="star1"
+                >★</label
+                >
+                </div>
+
+                <button type="submit" class="submit-review">Отправить отзыв</button>
+            </form>
         </div>
         <div class="review">
-          <h2>Отзывы</h2>
-          <div class="review-box">
-            <strong>Alexey <span class="stars">★★★★★</span></strong>
-            Отличное расположение, комфортные номера и приветливый персонал.
-            Очень понравилось наше пребывание!
-          </div>
+            <h2>Отзывы</h2>
+            {% for review in reviews %}
+            <div class="review-box">
+                <strong>{{ review["username"] }}<span class="stars">★★★★★</span></strong>
+                {{ review["text"] }}
+            </div>
+            {% endfor %}
         </div>
-      </div>
     </div>
-    <script>
-      window.images = {{ images | tojson }};
-    </script>
-    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
-  </body>
+</div>
+<script>
+    window.images = {{ images | tojson }};
+</script>
+<script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+</body>
 </html>
