@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Результаты поиска</title>
+    <link
+      rel="stylesheet"
+      href="../static/styles/search.css"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="nav-links">
+          <a href="/">Главная</a>
+          <a href="#">О НАС</a>
+          <a href="#">УСЛУГИ</a>
+          <a href="/logout">ВЫХОД</a>
+        </div>
+      </nav>
+    </header>
+
+    <section class="search-header">
+      <h1>НАЙДЕННЫЕ ОТЕЛИ</h1>
+      <p>Город: <strong>{{ city }}</strong></p>
+    </section>
+
+    <div class="search-container">
+      <aside class="sidebar">
+        <h3>СОРТИРОВКА</h3>
+        <select name="sort" id="sort">
+          <option value="price-asc">По цене: от низкой к высокой</option>
+          <option value="price-desc">По цене: от высокой к низкой</option>
+          <option value="rating-desc">По рейтингу</option>
+        </select>
+      </aside>
+
+      <main class="results">
+        {% if hotels %} {% for hotel in hotels %}
+        <div class="hotel-card">
+          <img src="{{ hotel.image_url }}" alt="Hotel image" />
+          <h3>{{ hotel.title }}</h3>
+          <p>{{ hotel.city }}</p>
+          <p class="price">€{{ hotel.price }}</p>
+          {% if hotel.rating %}
+          <p class="rating">★ {{ "%.1f"|format(hotel.rating) }}</p>
+          {% else %}
+          <p class="rating">★ Нет отзывов</p>
+          {% endif %}
+        </div>
+        {% endfor %} {% else %}
+        <p class="no-results">Нет отелей по этому запросу.</p>
+        {% endif %}
+      </main>
+    </div>
+  </body>
+</html>
