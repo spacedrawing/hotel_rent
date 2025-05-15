@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Вход и Регистрация</title>
+  <link rel="stylesheet" href="../static/styles/auth.css">
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form action="/register" method="post">
+        <h1>Регистрация</h1>
+        <input type="text" name="name" placeholder="Имя" required />
+        <input type="text" name="surname" placeholder="Фамилия" required />
+        <input type="text" name="patronymic" placeholder="Отчество (необязательно)" >
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Пароль" required />
+        <button type="submit">Создать аккаунт</button>
+      </form>
+    </div>
+    <div class="form-container sign-in-container">
+      <form action="/login" method="post">
+        <h1>Вход</h1>
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Пароль" required />
+        <button type="submit">Войти</button>
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>С возвращением!</h1>
+          <p>Чтобы оставаться с нами, пожалуйста, войдите в свой аккаунт</p>
+          <button class="ghost" id="signIn">Войти</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Привет, друг!</h1>
+          <p>Введите свои данные и начните путешествие вместе с нами</p>
+          <button class="ghost" id="signUp">Регистрация</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const container = document.getElementById("container");
+    document.getElementById("signUp").addEventListener("click", () => {
+      container.classList.add("right-panel-active");
+    });
+    document.getElementById("signIn").addEventListener("click", () => {
+      container.classList.remove("right-panel-active");
+    });
+  </script>
+</body>
+</html>
