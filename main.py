@@ -146,21 +146,22 @@ def hotel_menu(index_hotel):
     ]
 
     if request.method == "POST":
-        date_in = request.form.get("checkin")
-        date_out = request.form.get("checkout")
-        if date_in and date_out:
-            print(date_in)
-            return redirect(f"/hotel_menu/{index_hotel}")
-        else:
-            return redirect(f"/hotel_menu/{index_hotel}")
-    if request.method == "POST":
+        if "checkin" in request.form and "checkout" in request.form:
+            date_in = request.form.get("checkin")
+            date_out = request.form.get("checkout")
+            if date_in and date_out:
+                print(date_in)
+                return redirect(f"/hotel_menu/{index_hotel}")
+            else:
+                return redirect(f"/hotel_menu/{index_hotel}")
+
         if current_user.is_authenticated:
             if request.form.get("rating"):
                 rating = int(request.form.get("rating"))
             else:
                 return render_template("error.html",
                                        message="Выберете количество звёзд для",
-                                       retry_url=url_for(f"/hotel_menu/{index_hotel}"))
+                                       retry_url=url_for("hotel_menu", index_hotel=index_hotel))
 
             new_review = Review(
                 text=request.form.get("text"),
