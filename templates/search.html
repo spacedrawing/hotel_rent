@@ -12,7 +12,7 @@
     <header>
       <nav class="navbar">
         <div class="nav-links">
-          <a href="/">Главная</a>
+          <a href="/">ГЛАВНАЯ</a>
           <a href="#">О НАС</a>
           <a href="#">УСЛУГИ</a>
           <a href="/logout">ВЫХОД</a>
@@ -39,11 +39,15 @@
         {% if hotel_cards %}
           {% for hotel_card in hotel_cards %}
           <div class="hotel-card">
-            <img src={{ hotel_card["image"] }} alt={{ hotel_card["alternative"] }} />
-            <h3>{{ hotel_card["title"] }}</h3>
-            <p>{{ hotel_card["city"] }}</p>
-            <p class="price">€{{ hotel_card["price"] }}</p>
-            <p class="rating">★ {{ hotel_card["rating"] }}</p>
+            <a
+            href="{{ url_for('hotel_menu', index_hotel=hotel_card['id']) }}"
+            class="card-link">
+              <img src={{ hotel_card["image"] }} alt={{ hotel_card["alternative"] }} />
+              <h3>{{ hotel_card["title"] }}</h3>
+              <p>{{ hotel_card["city"] }}</p>
+              <p class="price">€{{ hotel_card["price"] }}</p>
+              <p class="rating">★ {{ hotel_card["rating"] }}</p>
+            </a>
           </div>
           {% endfor %}
         {% else %}

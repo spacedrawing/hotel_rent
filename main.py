@@ -63,11 +63,9 @@ def index():
 def search():
     search_city = request.args.get("city")
     db_sess = db_session.create_session()
-    print(search_city)
-    hotels = db_sess.query(Hotel).filter(Hotel.city == search_city.capitalize()).all()
+    hotels = db_sess.query(Hotel).filter(Hotel.city == search_city).all()
 
     hotel_cards = []
-    print(hotels)
     for hotel in hotels:
         hotel_data = hotel.__dict__
         reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == hotel_data["id"]).all()]
@@ -77,9 +75,8 @@ def search():
             hotel_data["rating"] = round(sum(i["rating"] for i in reviews) / len(reviews), 1)
 
         hotel_cards.append(hotel_data)
-        print(hotel_cards)
 
-    return render_template("search.html", hotel_cards=hotel_cards)
+    return render_template("search.html", hotel_cards=hotel_cards, city = search_city)
 
 
 @app.route("/auth")
@@ -136,8 +133,8 @@ def hotel_menu(index_hotel):
                 rating = int(request.form.get("rating"))
             else:
                 return render_template("error.html",
-                                       message="Пользователь с таким email уже существует",
-                                       retry_url=url_for("hotel_menu"))
+                                       message="Выберете количество звёзд для",
+                                       retry_url=url_for(f"/hotel_menu/{index_hotel}"))
 
             new_review = Review(
                 text=request.form.get("text"),
