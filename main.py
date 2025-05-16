@@ -69,16 +69,14 @@ def search():
 
     for hotel in hotels:
         hotel_data = hotel.__dict__
-        reviews = [
-            i.__dict__
-            for i in db_sess.query(Review).filter(Review.hotel_id == hotel.id).all()
-        ]
+        reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == hotel_data["id"]).all()]
         if len(reviews) == 0:
             hotel_data["rating"] = "Нет отзывов"
         else:
             hotel_data["rating"] = round(sum(i["rating"] for i in reviews) / len(reviews), 1)
 
         hotel_cards.append(hotel_data)
+        print(hotel_cards)
 
     return render_template("search.html", city=city, hotel_cards=hotel_cards)
 
