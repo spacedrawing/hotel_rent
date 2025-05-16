@@ -64,10 +64,10 @@ def index():
 @app.route("/search")
 @login_required
 def search():
-    city = request.args.get("city")
+    search_city = request.args.get("city")
     db_sess = db_session.create_session()
 
-    hotels = db_sess.query(Hotel).filter(Hotel.city == city).all()
+    hotels = db_sess.query(Hotel).filter(str(Hotel.city).lower() == search_city.lower()).all()
     hotel_cards = []
 
     for hotel in hotels:
@@ -83,7 +83,7 @@ def search():
 
         hotel_cards.append(hotel_data)
 
-    return render_template("search.html", city=city, hotel_cards=hotel_cards)
+    return render_template("search.html", city=search_city, hotel_cards=hotel_cards)
 
      
 
