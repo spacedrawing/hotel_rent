@@ -91,7 +91,7 @@ def register():
         return render_template(
             "error.html",
             message="Пользователь с таким email уже существует",
-            retry_url=url_for("auth"),
+            retry_url=url_for("auth")
         )
     user = User(
         name=request.form["name"],
@@ -129,9 +129,16 @@ def hotel_menu(index_hotel):
 
     if request.method == "POST":
         if current_user.is_authenticated:
+            if request.form.get("rating"):
+                rating = int(request.form.get("rating"))
+            else:
+                return render_template("error.html",
+                                       message="Пользователь с таким email уже существует",
+                                       retry_url=url_for("hotel_menu"))
+
             new_review = Review(
                 text=request.form.get("text"),
-                rating=int(request.form.get("rating")),
+                rating=rating,
                 username=current_user.name,
                 user_id=current_user.id,
                 hotel_id=index_hotel,
