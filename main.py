@@ -47,7 +47,6 @@ def index():
         if city:
             return redirect(url_for("search") + f"?city={city}")
 
-
     for slov in list_hotel_cards:
         reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == slov["id"]).all()]
         if len(reviews) == 0:
@@ -76,11 +75,8 @@ def search():
             hotel_data["rating"] = round(sum(i["rating"] for i in reviews) / len(reviews), 1)
 
         hotel_cards.append(hotel_data)
-        print(hotel_cards)
 
-    return render_template("search.html", city=city, hotel_cards=hotel_cards)
-
-
+    return render_template("search.html", hotel_cards=hotel_cards)
 
 
 @app.route("/auth")
@@ -115,7 +111,7 @@ def login():
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.email == request.form.get("email")).first()
     if not user or not check_password_hash(
-        user.hashed_password, request.form.get("password")
+            user.hashed_password, request.form.get("password")
     ):
         return render_template(
             "error.html",
