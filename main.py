@@ -14,6 +14,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from data.hotel import Hotel
 from data.review import Review
 from data.user import User
+from data.room import Room
+from data.booking import Booking
 from data import db_session
 from datetime import timedelta
 
@@ -177,7 +179,8 @@ def hotel_menu(index_hotel):
         }
         for review in reviews
     ]
-
+    room_types = [i.__dict__ for i in db_sess.query(Room).filter(Room.hotel_id == index_hotel).all()]
+    print(room_types)
     return render_template(
         "hotel_menu.html",
         images=images,
@@ -185,6 +188,7 @@ def hotel_menu(index_hotel):
         hotel_card=hotel_card,
         conveniences=conveniences,
         reviews=review_list,
+        room_types = room_types,
     )
 
 
