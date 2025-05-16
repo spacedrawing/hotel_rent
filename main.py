@@ -128,6 +128,14 @@ def hotel_menu(index_hotel):
     db_sess = db_session.create_session()
 
     if request.method == "POST":
+        date_in = request.form.get("checkin")
+        date_out = request.form.get("checkout")
+        if date_in and date_out:
+            print(date_in)
+            return redirect(f"/hotel_menu/{index_hotel}")
+        else:
+            return redirect(f"/hotel_menu/{index_hotel}")
+    if request.method == "POST":
         if current_user.is_authenticated:
             if request.form.get("rating"):
                 rating = int(request.form.get("rating"))
