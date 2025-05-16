@@ -13,24 +13,30 @@
           <a href="#">ДОМА</a>
           <a href="#">О НАС</a>
           <a href="#">УСЛУГИ</a>
+
+          {% if current_user.is_authenticated %}
+            <a href="{{ url_for('logout') }}">ВЫХОД</a>
+          {% else %}
+            <a href="{{ url_for('auth') }}">ВОЙТИ</a>
+          {% endif %}
         </div>
       </nav>
       <div class="hero">
         <h1>НАЙТИ ОТЕЛИ</h1>
-        <form class="search-form">
-            <input type="text" id="city" name="city" placeholder="город">
+        <form class="search-form" method="POST" action="/">
+          <input type="text" id="city" name="city" placeholder="город" />
 
-            <div>
-              <label for="checkin" class="form-label">Дата заезда</label>
-              <input type="date" id="checkin" name="checkin">
-            </div>
-          
-            <div>
-              <label for="checkout" class="form-label">Дата выезда</label>
-              <input type="date" id="checkout" name="checkout">
-            </div>
-          
-            <button type="submit">ПОИСК</button>
+          <div>
+            <label for="checkin" class="form-label">Дата заезда</label>
+            <input type="date" id="checkin" name="checkin" />
+          </div>
+
+          <div>
+            <label for="checkout" class="form-label">Дата выезда</label>
+            <input type="date" id="checkout" name="checkout" />
+          </div>
+
+          <button type="submit">ПОИСК</button>
         </form>
       </div>
     </header>
@@ -51,16 +57,19 @@
         <h2>ПОПУЛЯРНЫЕ ОТЕЛИ</h2>
         <div class="cards" id="hotel-cards">
           {% for hotel_card in list_hotel_cards %}
-            {% set link_mod = '/hotel_menu/' + hotel_card["id"]|string %}
-            <a href={{ link_mod }} class="card-link">
-              <div class="card">
-                <img src={{ hotel_card["image"] }} alt={{ hotel_card["alternative"] }} />
-                <h3>{{ hotel_card["title"] }}</h3>
-                <p>{{ hotel_card["city"] }}</p>
-                <p class="price">€{{ hotel_card["price"] }}</p>
-                <p class="rating">★ {{ hotel_card["rating"] }}</p>
-              </div>
-            </a>
+          <a
+            href="{{ url_for('hotel_menu', index_hotel=hotel_card['id']) }}"
+            class="card-link"
+          >
+            <div class="card">
+              <img src={{ hotel_card["image"] }} alt={{
+              hotel_card["alternative"] }} />
+              <h3>{{ hotel_card["title"] }}</h3>
+              <p>{{ hotel_card["city"] }}</p>
+              <p class="price">€{{ hotel_card["price"] }}</p>
+              <p class="rating">★ {{ hotel_card["rating"] }}</p>
+            </div>
+          </a>
           {% endfor %}
         </div>
       </section>

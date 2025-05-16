@@ -4,7 +4,7 @@ from .db_session import SqlAlchemyBase
 
 class Review(SqlAlchemyBase):
     __tablename__ = 'review'
-
+    
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     text = sqlalchemy.Column(sqlalchemy.String, nullable=True, default='')
     rating = sqlalchemy.Column(sqlalchemy.Integer, nullable=True, default=0)
