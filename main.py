@@ -47,12 +47,8 @@ def index():
         if city:
             return redirect(url_for("search") + f"?city={city}")
 
-
     for slov in list_hotel_cards:
-        reviews = [
-            i.__dict__
-            for i in db_sess.query(Review).filter(Review.hotel_id == slov["id"]).all()
-        ]
+        reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == slov["id"]).all()]
         if len(reviews) == 0:
             slov["rating"] = "Нет отзывов"
         else:
@@ -72,10 +68,7 @@ def search():
 
     for hotel in hotels:
         hotel_data = hotel.__dict__
-        reviews = [
-            i.__dict__
-            for i in db_sess.query(Review).filter(Review.hotel_id == hotel.id).all()
-        ]
+        reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == hotel_data["id"]).all()]
         if len(reviews) == 0:
             hotel_data["rating"] = "Нет отзывов"
         else:
@@ -83,9 +76,7 @@ def search():
 
         hotel_cards.append(hotel_data)
 
-    return render_template("search.html", city=search_city, hotel_cards=hotel_cards)
-
-     
+    return render_template("search.html", hotel_cards=hotel_cards)
 
 
 @app.route("/auth")
@@ -100,7 +91,7 @@ def register():
         return render_template(
             "error.html",
             message="Пользователь с таким email уже существует",
-            retry_url=url_for("auth"),
+            retry_url=url_for("auth")
         )
     user = User(
         name=request.form["name"],
@@ -120,7 +111,7 @@ def login():
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.email == request.form.get("email")).first()
     if not user or not check_password_hash(
-        user.hashed_password, request.form.get("password")
+            user.hashed_password, request.form.get("password")
     ):
         return render_template(
             "error.html",
@@ -138,9 +129,16 @@ def hotel_menu(index_hotel):
 
     if request.method == "POST":
         if current_user.is_authenticated:
+            if request.form.get("rating"):
+                rating = int(request.form.get("rating"))
+            else:
+                return render_template("error.html",
+                                       message="Пользователь с таким email уже существует",
+                                       retry_url=url_for("hotel_menu"))
+
             new_review = Review(
                 text=request.form.get("text"),
-                rating=int(request.form.get("rating")),
+                rating=rating,
                 username=current_user.name,
                 user_id=current_user.id,
                 hotel_id=index_hotel,
@@ -151,12 +149,16 @@ def hotel_menu(index_hotel):
         else:
             return redirect("/auth")
 
-    files = os.listdir(path=f"static/images_{index_hotel}")    
+    files = os.listdir(path=f"static/images_{index_hotel}")
     images = [
         url_for("static", filename=f"images_{index_hotel}/room{i}.jpg")
         for i in range(1, len(files) + 1)
     ]
     hotel_card = db_sess.query(Hotel).filter(Hotel.id == index_hotel).first().__dict__
+    conveniences = hotel_card["conveniences"].split(';')
+    reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()]
+    return render_template("hotel_menu.html", images=images, hotel_card=hotel_card,
+                           conveniences=conveniences, reviews=reviews)
     conveniences = hotel_card["conveniences"].split(";")
     reviews = db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()
     review_list = [

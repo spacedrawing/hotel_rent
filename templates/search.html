@@ -36,20 +36,18 @@
       </aside>
 
       <main class="results">
-        {% if hotels %} {% for hotel in hotels %}
-        <div class="hotel-card">
-          <img src="{{ hotel.image_url }}" alt="Hotel image" />
-          <h3>{{ hotel.title }}</h3>
-          <p>{{ hotel.city }}</p>
-          <p class="price">€{{ hotel.price }}</p>
-          {% if hotel.rating %}
-          <p class="rating">★ {{ "%.1f"|format(hotel.rating) }}</p>
-          {% else %}
-          <p class="rating">★ Нет отзывов</p>
-          {% endif %}
-        </div>
-        {% endfor %} {% else %}
-        <p class="no-results">Нет отелей по этому запросу.</p>
+        {% if hotel_cards %}
+          {% for hotel_card in hotel_cards %}
+          <div class="hotel-card">
+            <img src={{ hotel_card["image"] }} alt={{ hotel_card["alternative"] }} />
+            <h3>{{ hotel_card["title"] }}</h3>
+            <p>{{ hotel_card["city"] }}</p>
+            <p class="price">€{{ hotel_card["price"] }}</p>
+            <p class="rating">★ {{ hotel_card["rating"] }}</p>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p class="no-results">Нет отелей по этому запросу.</p>
         {% endif %}
       </main>
     </div>

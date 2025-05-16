@@ -23,6 +23,10 @@ h2 {
   margin-top: 40px;
 }
 
+li {
+  margin-bottom: 10px;
+}
+
 .navbar {
   display: flex;
   justify-content: flex-end;
@@ -173,7 +177,7 @@ h2 {
   list-style: none;
   padding-left: 0;
   columns: 2;
-  max-width: 500px;
+  max-width: 800px;
 }
 
 .amenities li::before {
@@ -183,7 +187,7 @@ h2 {
 }
 
 .leave-review {
-  margin-top: 40px;;
+  margin-top: 40px;
   background: #ffffff;
   padding: 20px;
   border-radius: 16px;
