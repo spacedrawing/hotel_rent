@@ -16,3 +16,4 @@ class Hotel(SqlAlchemyBase):
     description = sqlalchemy.Column(sqlalchemy.String)
     conveniences = sqlalchemy.Column(sqlalchemy.String)
     reviews = orm.relationship("Review", back_populates="hotel")
+    rooms = orm.relationship("Room", back_populates="hotel")
