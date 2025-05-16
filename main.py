@@ -32,7 +32,7 @@ def hotel_menu(index_hotel):
     hotel_card = db_sess.query(Hotel).filter(Hotel.id == index_hotel).first().__dict__
     conveniences = hotel_card["conveniences"].split(';')
     reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()]
-    return render_template("hotel_menu.html", images=images, index_hotel=index_hotel, hotel_card=hotel_card,
+    return render_template("hotel_menu.html", images=images, hotel_card=hotel_card,
                            conveniences=conveniences, reviews=reviews)
 
 
