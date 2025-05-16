@@ -9,6 +9,7 @@ from flask_login import (
     logout_user,
     current_user,
 )
+from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
 from data.hotel import Hotel
 from data.review import Review
@@ -52,7 +53,7 @@ def index():
         if len(reviews) == 0:
             slov["rating"] = "Нет отзывов"
         else:
-            slov["rating"] = str(sum(i["rating"] for i in reviews) / len(reviews))
+            slov["rating"] = round(sum(i["rating"] for i in reviews) / len(reviews), 1)
 
     return render_template("index.html", list_hotel_cards=list_hotel_cards)
 
@@ -62,10 +63,11 @@ def index():
 def search():
     search_city = request.args.get("city")
     db_sess = db_session.create_session()
+    print(search_city)
+    hotels = db_sess.query(Hotel).filter(Hotel.city == search_city.capitalize()).all()
 
-    hotels = db_sess.query(Hotel).filter(str(Hotel.city).lower() == search_city.lower()).all()
     hotel_cards = []
-
+    print(hotels)
     for hotel in hotels:
         hotel_data = hotel.__dict__
         reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == hotel_data["id"]).all()]
@@ -75,6 +77,7 @@ def search():
             hotel_data["rating"] = round(sum(i["rating"] for i in reviews) / len(reviews), 1)
 
         hotel_cards.append(hotel_data)
+        print(hotel_cards)
 
     return render_template("search.html", hotel_cards=hotel_cards)
 
@@ -109,7 +112,7 @@ def register():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     db_sess = db_session.create_session()
-    user = db_sess.query(User).filter(User.email == request.form.get("email")).first()
+    user = db_session.query(User).filter(User.email == request.form.get("email")).first()
     if not user or not check_password_hash(
             user.hashed_password, request.form.get("password")
     ):
