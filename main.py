@@ -162,7 +162,7 @@ def hotel_menu(index_hotel):
                 rating = int(request.form.get("rating"))
             else:
                 return render_template("error.html",
-                                       message="Выберете количество звёзд для",
+                                       message="Выберете количество звёзд для отзыва",
                                        retry_url=url_for("hotel_menu", index_hotel=index_hotel))
 
             new_review = Review(
@@ -186,8 +186,6 @@ def hotel_menu(index_hotel):
     hotel_card = db_sess.query(Hotel).filter(Hotel.id == index_hotel).first().__dict__
     conveniences = hotel_card["conveniences"].split(';')
     reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()]
-    return render_template("hotel_menu.html", images=images, hotel_card=hotel_card,
-                           conveniences=conveniences, reviews=reviews)
     conveniences = hotel_card["conveniences"].split(";")
     reviews = db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()
     review_list = [
