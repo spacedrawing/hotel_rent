@@ -29,10 +29,38 @@
 
         <div class="booking-panel">
           <h3>Забронировать</h3>
+
+          <div class="input-group">
+            <label for="room-select">Тип номера</label>
+            <select id="room-select" name="room">
+              {% for room in room_types %}
+              <option value="{{ room.id }}" data-price="{{ room.price }}" data-description="{{ room.description }}">
+                {{ room.name }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="room-details" id="room-details">
+            <p id="room-description">{{ room_types[0].description }}</p>
+            <div class="price">
+              € <span id="room-price">{{ room_types[0].price }}</span>
+              <span style="font-weight: normal; font-size: 16px">за ночь</span>
+            </div>
+          </div>
+
           <div class="input-group">
             <label for="checkin">Дата заезда</label>
             <input type="date" id="checkin" name="checkin" />
           </div>
+
+          <div class="input-group">
+            <label for="checkout">Дата выезда</label>
+            <input type="date" id="checkout" name="checkout" />
+          </div>
+
+          <button class="book-btn">Забронировать</button>
+        </div>
 
           <div class="input-group">
             <label for="checkout">Дата выезда</label>
@@ -117,5 +145,19 @@
       window.images = {{ images | tojson }};
     </script>
     <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+    <script>
+      const roomSelect = document.getElementById('room-select');
+      const roomDescription = document.getElementById('room-description');
+      const roomPrice = document.getElementById('room-price');
+
+      roomSelect.addEventListener('change', function () {
+        const selectedOption = roomSelect.options[roomSelect.selectedIndex];
+        const price = selectedOption.dataset.price;
+        const description = selectedOption.dataset.description;
+
+        roomPrice.textContent = price;
+        roomDescription.textContent = description;
+      });
+</script>
   </body>
 </html>

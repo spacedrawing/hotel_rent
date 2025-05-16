@@ -84,6 +84,49 @@ li {
   justify-content: center;
 }
 
+.booking-panel select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+/* Блок с описанием и ценой номера */
+.room-details {
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+}
+
+.room-details p {
+  margin: 0 0 10px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+.room-details .price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #222;
+}
+
+/* Общие стили для input-групп (на всякий случай, чтобы выровнять) */
+.booking-panel .input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.booking-panel .input-group {
+  margin-bottom: 15px;
+}
+
 .carousel-btn {
   position: absolute;
   top: 50%;
