@@ -29,7 +29,6 @@
 
         <div class="booking-panel">
           <h3>Забронировать</h3>
-
           <div class="input-group">
             <label for="room-select">Тип номера</label>
             <select id="room-select" name="room">
@@ -40,7 +39,6 @@
               {% endfor %}
             </select>
           </div>
-
           <div class="room-details" id="room-details">
             <p id="room-description">{{ room_types[0].description }}</p>
             <div class="price">
@@ -48,21 +46,14 @@
               <span style="font-weight: normal; font-size: 16px">за ночь</span>
             </div>
           </div>
-
           <div class="input-group">
             <label for="checkin">Дата заезда</label>
             <input type="date" id="checkin" name="checkin" />
           </div>
+        <div class="input-group">
+          <label for="checkout">Дата выезда</label>
+          <input type="date" id="checkout" name="checkout" />
         </div>
-
-          <div class="input-group">
-            <label for="checkout">Дата выезда</label>
-            <input type="date" id="checkout" name="checkout" />
-          </div>
-          <div class="price">
-            € 200
-            <span style="font-weight: normal; font-size: 16px">за ночь</span>
-          </div>
           <button class="book-btn">Забронировать</button>
         </div>
       </div>

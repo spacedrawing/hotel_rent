@@ -94,7 +94,6 @@ li {
   box-sizing: border-box;
 }
 
-/* Блок с описанием и ценой номера */
 .room-details {
   background-color: #f9f9f9;
   padding: 12px;
@@ -115,7 +114,6 @@ li {
   color: #222;
 }
 
-/* Общие стили для input-групп (на всякий случай, чтобы выровнять) */
 .booking-panel .input-group label {
   display: block;
   margin-bottom: 6px;
