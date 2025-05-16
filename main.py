@@ -127,6 +127,24 @@ def login():
 def hotel_menu(index_hotel):
     db_sess = db_session.create_session()
 
+    room_types = [
+    {
+        "name": "Эконом",
+        "description": "Уютный номер с базовыми удобствами, идеален для краткосрочного проживания.",
+        "price": 100
+    },
+    {
+        "name": "Стандарт",
+        "description": "Просторный номер с рабочим столом и бесплатным Wi-Fi.",
+        "price": 150
+    },
+    {
+        "name": "Люкс",
+        "description": "Роскошный номер с видом на город, ванной и мини-баром.",
+        "price": 250
+    }
+    ]
+
     if request.method == "POST":
         date_in = request.form.get("checkin")
         date_out = request.form.get("checkout")
@@ -165,8 +183,7 @@ def hotel_menu(index_hotel):
     hotel_card = db_sess.query(Hotel).filter(Hotel.id == index_hotel).first().__dict__
     conveniences = hotel_card["conveniences"].split(';')
     reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()]
-    return render_template("hotel_menu.html", images=images, hotel_card=hotel_card,
-                           conveniences=conveniences, reviews=reviews)
+
     conveniences = hotel_card["conveniences"].split(";")
     reviews = db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()
     review_list = [
@@ -185,6 +202,7 @@ def hotel_menu(index_hotel):
         hotel_card=hotel_card,
         conveniences=conveniences,
         reviews=review_list,
+        room_types=room_types,
     )
 
 
