@@ -102,14 +102,14 @@ def register():
     )
     db_sess.add(user)
     db_sess.commit()
-    session["user_id"] = user.id
+    login_user(user)
     return redirect("/")
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     db_sess = db_session.create_session()
-    user = db_session.query(User).filter(User.email == request.form.get("email")).first()
+    user = db_sess.query(User).filter(User.email == request.form.get("email")).first()
     if not user or not check_password_hash(
             user.hashed_password, request.form.get("password")
     ):
