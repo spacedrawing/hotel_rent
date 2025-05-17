@@ -79,7 +79,7 @@ def search():
 
         hotel_cards.append(hotel_data)
 
-    return render_template("search.html", hotel_cards=hotel_cards, city=search_city)
+    return render_template("search.html", hotel_cards=hotel_cards, city = search_city)
 
 
 @app.route("/auth")
@@ -177,8 +177,8 @@ def hotel_menu(index_hotel):
                 rating = int(request.form.get("rating"))
             else:
                 return render_template("error.html",
-                                       message="Выберете количество звёзд для",
-                                       retry_url=url_for(f"/hotel_menu/{index_hotel}"))
+                                       message="Выберете количество звёзд для отзыва",
+                                       retry_url=url_for("hotel_menu", index_hotel=index_hotel))
 
             new_review = Review(
                 text=request.form.get("text"),
