@@ -55,6 +55,9 @@ def index():
             slov["rating"] = "Нет отзывов"
         else:
             slov["rating"] = round(sum(i["rating"] for i in reviews) / len(reviews), 1)
+        price = sorted([i.__dict__ for i in db_sess.query(Room).filter(Room.hotel_id == slov["id"]).all()],
+            key=lambda x: x["price"])
+        slov["price"] = price[0]["price"]
 
     return render_template("index.html", list_hotel_cards=list_hotel_cards)
 
@@ -65,7 +68,6 @@ def search():
     search_city = request.args.get("city")
     db_sess = db_session.create_session()
     hotels = db_sess.query(Hotel).filter(Hotel.city == search_city).all()
-
     hotel_cards = []
     for hotel in hotels:
         hotel_data = hotel.__dict__
@@ -74,10 +76,12 @@ def search():
             hotel_data["rating"] = "Нет отзывов"
         else:
             hotel_data["rating"] = round(sum(i["rating"] for i in reviews) / len(reviews), 1)
-
+        price = sorted([i.__dict__ for i in db_sess.query(Room).filter(Room.hotel_id == hotel_data["id"]).all()],
+                       key=lambda x: x["price"])
+        hotel_data["price"] = price[0]["price"]
         hotel_cards.append(hotel_data)
 
-    return render_template("search.html", hotel_cards=hotel_cards, city = search_city)
+    return render_template("search.html", hotel_cards=hotel_cards, city=search_city)
 
 
 @app.route("/auth")
@@ -157,7 +161,8 @@ def hotel_menu(index_hotel):
                     date_in = dt.strptime(date_in, "%Y-%m-%d")
                     if (date_in and date_out) and (date_in < date_out) and dt.now() < date_in and dt.now() < date_out:
                         booking_order = [i.__dict__ for i in
-                                         db_sess.query(Booking).filter(Booking.room_id == request.form.get("room")).all()]
+                                         db_sess.query(Booking).filter(
+                                             Booking.room_id == request.form.get("room")).all()]
                         for i in booking_order:
                             if (dt.strptime(i["start_date"], "%Y-%m-%d") <= date_in <= dt.strptime(i["end_date"],
                                                                                                    "%Y-%m-%d")) or (
