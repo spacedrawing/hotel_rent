@@ -3,10 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Результаты поиска</title>
-    <link
-      rel="stylesheet"
-      href="../static/styles/search.css"
-    />
+    <link rel="stylesheet" href="../static/styles/search.css" />
   </head>
   <body>
     <header>
@@ -14,7 +11,6 @@
         <div class="nav-links">
           <a href="/">ГЛАВНАЯ</a>
           <a href="#">О НАС</a>
-          <a href="#">УСЛУГИ</a>
           <a href="/logout">ВЫХОД</a>
         </div>
       </nav>
@@ -31,29 +27,66 @@
         <select name="sort" id="sort">
           <option value="price-asc">По цене: от низкой к высокой</option>
           <option value="price-desc">По цене: от высокой к низкой</option>
-          <option value="rating-desc">По рейтингу</option>
+          <option value="rating-asc">По рейтингу: от низкого к высокому</option>
+          <option value="rating-desc">
+            По рейтингу: от высокого к низкого
+          </option>
         </select>
       </aside>
 
       <main class="results">
-        {% if hotel_cards %}
-          {% for hotel_card in hotel_cards %}
-          <div class="hotel-card">
-            <a
+        {% if hotel_cards %} {% for hotel_card in hotel_cards %}
+        <div
+          class="hotel-card"
+          data-price="{{ hotel_card['price'] }}"
+          data-rating="{{ hotel_card['rating'] }}"
+        >
+          <a
             href="{{ url_for('hotel_menu', index_hotel=hotel_card['id']) }}"
-            class="card-link">
-              <img src={{ hotel_card["image"] }} alt={{ hotel_card["alternative"] }} />
-              <h3>{{ hotel_card["title"] }}</h3>
-              <p>{{ hotel_card["city"] }}</p>
-              <p class="price">от {{ hotel_card["price"] }}€</p>
-              <p class="rating">★ {{ hotel_card["rating"] }}</p>
-            </a>
-          </div>
-          {% endfor %}
-        {% else %}
-          <p class="no-results">Нет отелей по этому запросу.</p>
+            class="card-link"
+          >
+            <img src={{ hotel_card["image"] }} alt={{ hotel_card["alternative"]
+            }} />
+            <h3>{{ hotel_card["title"] }}</h3>
+            <p>{{ hotel_card["city"] }}</p>
+            <p class="price">от {{ hotel_card["price"] }}€</p>
+            <p class="rating">★ {{ hotel_card["rating"] }}</p>
+          </a>
+        </div>
+        {% endfor %} {% else %}
+        <p class="no-results">Нет отелей по этому запросу.</p>
         {% endif %}
       </main>
     </div>
+    <script>
+      document.getElementById("sort").addEventListener("change", function () {
+        const sortType = this.value;
+        const container = document.querySelector(".results");
+        const cards = Array.from(container.querySelectorAll(".hotel-card"));
+
+        cards.sort((a, b) => {
+          const aPrice = parseFloat(a.dataset.price);
+          const bPrice = parseFloat(b.dataset.price);
+          const aRating = parseFloat(a.dataset.rating);
+          const bRating = parseFloat(b.dataset.rating);
+
+          switch (sortType) {
+            case "price-asc":
+              return aPrice - bPrice;
+            case "price-desc":
+              return bPrice - aPrice;
+            case "rating-asc":
+              return aRating - bRating;
+            case "rating-desc":
+              return bRating - aRating;
+            default:
+              return 0;
+          }
+        });
+
+        container.innerHTML = "";
+        cards.forEach((card) => container.appendChild(card));
+      });
+    </script>
   </body>
 </html>
