@@ -12,7 +12,6 @@
         <div class="nav-links">
           <a href="#">ДОМА</a>
           <a href="#">О НАС</a>
-          <a href="#">УСЛУГИ</a>
 
           {% if current_user.is_authenticated %}
             <a href="{{ url_for('logout') }}">ВЫХОД</a>
