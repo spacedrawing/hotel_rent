@@ -131,24 +131,23 @@ def hotel_menu(index_hotel):
     if request.method == "POST":
         if current_user.is_authenticated:
             if request.form.get("review_button"):
-                if current_user.is_authenticated:
-                    if request.form.get("rating"):
-                        rating = int(request.form.get("rating"))
-                    else:
-                        return render_template("error.html",
-                                               message="Выберете количество звёзд для отзыва",
-                                               retry_url=url_for("hotel_menu", index_hotel=index_hotel))
+                if request.form.get("rating"):
+                    rating = int(request.form.get("rating"))
+                else:
+                    return render_template("error.html",
+                                           message="Выберете количество звёзд для отзыва",
+                                           retry_url=url_for("hotel_menu", index_hotel=index_hotel))
 
-                    new_review = Review(
-                        text=request.form.get("text"),
-                        rating=rating,
-                        username=current_user.name,
-                        user_id=current_user.id,
-                        hotel_id=index_hotel,
-                    )
-                    db_sess.add(new_review)
-                    db_sess.commit()
-                    return redirect(f"/hotel_menu/{index_hotel}")
+                new_review = Review(
+                    text=request.form.get("text"),
+                    rating=rating,
+                    username=current_user.name,
+                    user_id=current_user.id,
+                    hotel_id=index_hotel,
+                )
+                db_sess.add(new_review)
+                db_sess.commit()
+                return redirect(f"/hotel_menu/{index_hotel}")
 
             elif request.form.get("booking_button"):
                 date_out = request.form.get("checkout")
@@ -156,7 +155,7 @@ def hotel_menu(index_hotel):
                 if date_in and date_out:
                     date_out = dt.strptime(date_out, "%Y-%m-%d")
                     date_in = dt.strptime(date_in, "%Y-%m-%d")
-                    if (date_in and date_out) and (date_in < date_out):
+                    if (date_in and date_out) and (date_in < date_out) and dt.now() < date_in and dt.now() < date_out:
                         booking_order = [i.__dict__ for i in
                                          db_sess.query(Booking).filter(Booking.room_id == request.form.get("room")).all()]
                         for i in booking_order:
