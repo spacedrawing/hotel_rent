@@ -13,5 +13,5 @@ class Booking(SqlAlchemyBase):
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("user.id"))
     user = orm.relationship("User")
 
-    start_date = sqlalchemy.Column(sqlalchemy.Date, nullable=False)
-    end_date = sqlalchemy.Column(sqlalchemy.Date, nullable=False)
+    start_date = sqlalchemy.Column(sqlalchemy.String, nullable=False)
+    end_date = sqlalchemy.Column(sqlalchemy.String, nullable=False)

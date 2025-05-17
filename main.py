@@ -18,6 +18,7 @@ from data.room import Room
 from data.booking import Booking
 from data import db_session
 from datetime import timedelta
+from datetime import datetime as dt
 
 app = Flask(__name__)
 app.permanent_session_lifetime = timedelta(days=30)
@@ -78,7 +79,7 @@ def search():
 
         hotel_cards.append(hotel_data)
 
-    return render_template("search.html", hotel_cards=hotel_cards, city = search_city)
+    return render_template("search.html", hotel_cards=hotel_cards, city=search_city)
 
 
 @app.route("/auth")
@@ -129,32 +130,47 @@ def login():
 def hotel_menu(index_hotel):
     db_sess = db_session.create_session()
 
-    room_types = [
-    {
-        "name": "Эконом",
-        "description": "Уютный номер с базовыми удобствами, идеален для краткосрочного проживания.",
-        "price": 100
-    },
-    {
-        "name": "Стандарт",
-        "description": "Просторный номер с рабочим столом и бесплатным Wi-Fi.",
-        "price": 150
-    },
-    {
-        "name": "Люкс",
-        "description": "Роскошный номер с видом на город, ванной и мини-баром.",
-        "price": 250
-    }
-    ]
-
     if request.method == "POST":
-        date_in = request.form.get("checkin")
         date_out = request.form.get("checkout")
+        date_in = request.form.get("checkin")
         if date_in and date_out:
-            print(date_in)
-            return redirect(f"/hotel_menu/{index_hotel}")
+            date_out = dt.strptime(date_out, "%Y-%m-%d")
+            date_in = dt.strptime(date_in, "%Y-%m-%d")
+            if (date_in and date_out) and (date_in < date_out):
+                booking_order = [i.__dict__ for i in
+                                 db_sess.query(Booking).filter(Booking.room_id == request.form.get("room")).all()]
+                for i in booking_order:
+                    if (dt.strptime(i["start_date"], "%Y-%m-%d") <= date_in <= dt.strptime(i["end_date"],
+                                                                                           "%Y-%m-%d")) or (
+                            dt.strptime(i["start_date"], "%Y-%m-%d") <= date_out <= dt.strptime(i["end_date"],
+                                                                                                "%Y-%m-%d")):
+                        print('Занято')
+                        return render_template(
+                            "error.html",
+                            message="Эта дата уже занята попробуйте другую",
+                            retry_url=url_for(f"/hotel_menu/{index_hotel}"),
+                        )
+                new_booking = Booking(
+                    room_id=request.form.get("room"),
+                    user_id=1,
+                    start_date=str(date_in).split()[0],
+                    end_date=str(date_out).split()[0],
+                )
+                db_sess.add(new_booking)
+                db_sess.commit()
+                return redirect(f"/hotel_menu/{index_hotel}")
+            else:
+                return render_template(
+                    "error.html",
+                    message="Корректно введите данные в поле с датой",
+                    retry_url=url_for(f"/hotel_menu/{index_hotel}"), )
         else:
-            return redirect(f"/hotel_menu/{index_hotel}")
+            return render_template(
+                "error.html",
+                message="Корректно введите данные в поле с датой",
+                retry_url=url_for(f"/hotel_menu/{index_hotel}"),
+            )
+
     if request.method == "POST":
         if current_user.is_authenticated:
             if request.form.get("rating"):
@@ -177,6 +193,7 @@ def hotel_menu(index_hotel):
         else:
             return redirect("/auth")
 
+    room_types = [i.__dict__ for i in db_sess.query(Room).filter(Room.hotel_id == index_hotel).all()]
     files = os.listdir(path=f"static/images_{index_hotel}")
     images = [
         url_for("static", filename=f"images_{index_hotel}/room{i}.jpg")
@@ -186,27 +203,7 @@ def hotel_menu(index_hotel):
     conveniences = hotel_card["conveniences"].split(';')
     reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()]
     return render_template("hotel_menu.html", images=images, hotel_card=hotel_card,
-                           conveniences=conveniences, reviews=reviews)
-    conveniences = hotel_card["conveniences"].split(";")
-    reviews = db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()
-    review_list = [
-        {
-            "username": review.username,
-            "text": review.text,
-            "rating": review.rating,
-        }
-        for review in reviews
-    ]
-
-    return render_template(
-        "hotel_menu.html",
-        images=images,
-        index_hotel=index_hotel,
-        hotel_card=hotel_card,
-        conveniences=conveniences,
-        reviews=review_list,
-        room_types = room_types,
-    )
+                           conveniences=conveniences, reviews=reviews, room_types=room_types)
 
 
 def main():
