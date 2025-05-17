@@ -1,7 +1,6 @@
-import json
 import os
-from flask import Flask, render_template, url_for, session
-from flask import request, redirect, flash
+from flask import Flask, render_template, url_for
+from flask import request, redirect
 from flask_login import (
     LoginManager,
     login_user,
@@ -9,7 +8,6 @@ from flask_login import (
     logout_user,
     current_user,
 )
-from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
 from data.hotel import Hotel
 from data.review import Review
@@ -131,65 +129,61 @@ def hotel_menu(index_hotel):
     db_sess = db_session.create_session()
 
     if request.method == "POST":
-        date_out = request.form.get("checkout")
-        date_in = request.form.get("checkin")
-        if date_in and date_out:
-            date_out = dt.strptime(date_out, "%Y-%m-%d")
-            date_in = dt.strptime(date_in, "%Y-%m-%d")
-            if (date_in and date_out) and (date_in < date_out):
-                booking_order = [i.__dict__ for i in
-                                 db_sess.query(Booking).filter(Booking.room_id == request.form.get("room")).all()]
-                for i in booking_order:
-                    if (dt.strptime(i["start_date"], "%Y-%m-%d") <= date_in <= dt.strptime(i["end_date"],
-                                                                                           "%Y-%m-%d")) or (
-                            dt.strptime(i["start_date"], "%Y-%m-%d") <= date_out <= dt.strptime(i["end_date"],
-                                                                                                "%Y-%m-%d")):
-                        print('Занято')
-                        return render_template(
-                            "error.html",
-                            message="Эта дата уже занята попробуйте другую",
-                            retry_url=url_for(f"/hotel_menu/{index_hotel}"),
-                        )
-                new_booking = Booking(
-                    room_id=request.form.get("room"),
-                    user_id=1,
-                    start_date=str(date_in).split()[0],
-                    end_date=str(date_out).split()[0],
-                )
-                db_sess.add(new_booking)
-                db_sess.commit()
-                return redirect(f"/hotel_menu/{index_hotel}")
-            else:
-                return render_template(
-                    "error.html",
-                    message="Корректно введите данные в поле с датой",
-                    retry_url=url_for(f"/hotel_menu/{index_hotel}"), )
-        else:
-            return render_template(
-                "error.html",
-                message="Корректно введите данные в поле с датой",
-                retry_url=url_for(f"/hotel_menu/{index_hotel}"),
-            )
-
-    if request.method == "POST":
         if current_user.is_authenticated:
-            if request.form.get("rating"):
-                rating = int(request.form.get("rating"))
-            else:
-                return render_template("error.html",
-                                       message="Выберете количество звёзд для отзыва",
-                                       retry_url=url_for("hotel_menu", index_hotel=index_hotel))
+            if request.form.get("review_button"):
+                if current_user.is_authenticated:
+                    if request.form.get("rating"):
+                        rating = int(request.form.get("rating"))
+                    else:
+                        return render_template("error.html",
+                                               message="Выберете количество звёзд для отзыва",
+                                               retry_url=url_for("hotel_menu", index_hotel=index_hotel))
 
-            new_review = Review(
-                text=request.form.get("text"),
-                rating=rating,
-                username=current_user.name,
-                user_id=current_user.id,
-                hotel_id=index_hotel,
-            )
-            db_sess.add(new_review)
-            db_sess.commit()
-            return redirect(f"/hotel_menu/{index_hotel}")
+                    new_review = Review(
+                        text=request.form.get("text"),
+                        rating=rating,
+                        username=current_user.name,
+                        user_id=current_user.id,
+                        hotel_id=index_hotel,
+                    )
+                    db_sess.add(new_review)
+                    db_sess.commit()
+                    return redirect(f"/hotel_menu/{index_hotel}")
+
+            elif request.form.get("booking_button"):
+                date_out = request.form.get("checkout")
+                date_in = request.form.get("checkin")
+                if date_in and date_out:
+                    date_out = dt.strptime(date_out, "%Y-%m-%d")
+                    date_in = dt.strptime(date_in, "%Y-%m-%d")
+                    if (date_in and date_out) and (date_in < date_out):
+                        booking_order = [i.__dict__ for i in
+                                         db_sess.query(Booking).filter(Booking.room_id == request.form.get("room")).all()]
+                        for i in booking_order:
+                            if (dt.strptime(i["start_date"], "%Y-%m-%d") <= date_in <= dt.strptime(i["end_date"],
+                                                                                                   "%Y-%m-%d")) or (
+                                    dt.strptime(i["start_date"], "%Y-%m-%d") <= date_out <= dt.strptime(i["end_date"],
+                                                                                                        "%Y-%m-%d")):
+                                return render_template("error.html",
+                                                       message="Эта дата уже занята попробуйте другую",
+                                                       retry_url=url_for("hotel_menu", index_hotel=index_hotel))
+                        new_booking = Booking(
+                            room_id=request.form.get("room"),
+                            user_id=1,
+                            start_date=str(date_in).split()[0],
+                            end_date=str(date_out).split()[0],
+                        )
+                        db_sess.add(new_booking)
+                        db_sess.commit()
+                        return redirect(f"/hotel_menu/{index_hotel}")
+                    else:
+                        return render_template("error.html",
+                                               message="Корректно введите данные в поле с датой",
+                                               retry_url=url_for("hotel_menu", index_hotel=index_hotel))
+                else:
+                    return render_template("error.html",
+                                           message="Корректно введите данные в поле с датой",
+                                           retry_url=url_for("hotel_menu", index_hotel=index_hotel))
         else:
             return redirect("/auth")
 
