@@ -89,14 +89,6 @@ def auth():
     return render_template("auth.html")
 
 
-@app.route("/kapi-team")
-def kapi():
-    images = [
-        url_for("static", filename=f"images/kapi-team.jpg"),
-        url_for("static", filename=f"images/kapi.png")]
-    return render_template("kapi.html", images=images)
-
-
 @app.route("/register", methods=["POST", "GET"])
 def register():
     db_sess = db_session.create_session()
@@ -210,6 +202,11 @@ def hotel_menu(index_hotel):
     reviews = [i.__dict__ for i in db_sess.query(Review).filter(Review.hotel_id == index_hotel).all()]
     return render_template("hotel_menu.html", images=images, hotel_card=hotel_card,
                            conveniences=conveniences, reviews=reviews, room_types=room_types)
+
+
+@app.route("/kapi-team")
+def kapi():
+    return render_template("about.html")
 
 
 def main():

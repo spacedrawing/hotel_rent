@@ -11,7 +11,7 @@
       <nav class="navbar">
         <div class="nav-links">
           <a href="#">ДОМА</a>
-          <a href="#">О НАС</a>
+          <a href="{{ url_for('kapi') }}">О НАС</a>
 
           {% if current_user.is_authenticated %}
           <a href="{{ url_for('logout') }}">ВЫХОД</a>
