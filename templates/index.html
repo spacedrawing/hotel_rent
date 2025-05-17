@@ -14,9 +14,9 @@
           <a href="#">О НАС</a>
 
           {% if current_user.is_authenticated %}
-            <a href="{{ url_for('logout') }}">ВЫХОД</a>
+          <a href="{{ url_for('logout') }}">ВЫХОД</a>
           {% else %}
-            <a href="{{ url_for('auth') }}">ВОЙТИ</a>
+          <a href="{{ url_for('auth') }}">ВОЙТИ</a>
           {% endif %}
         </div>
       </nav>
@@ -60,7 +60,11 @@
             href="{{ url_for('hotel_menu', index_hotel=hotel_card['id']) }}"
             class="card-link"
           >
-            <div class="card">
+            <div
+              class="card"
+              data-price="{{ hotel_card['price'] }}"
+              data-rating="{{ hotel_card['rating'] }}"
+            >
               <img src={{ hotel_card["image"] }} alt={{
               hotel_card["alternative"] }} />
               <h3>{{ hotel_card["title"] }}</h3>
@@ -73,6 +77,38 @@
         </div>
       </section>
     </main>
-    <script></script>
+    <script>
+      document
+        .getElementById("sort-options")
+        .addEventListener("change", function () {
+          const sortType = this.value;
+          const container = document.getElementById("hotel-cards");
+          const cards = Array.from(container.querySelectorAll(".card-link"));
+
+          cards.sort((a, b) => {
+            const aCard = a.querySelector(".card");
+            const bCard = b.querySelector(".card");
+
+            const aPrice = parseFloat(aCard.dataset.price);
+            const bPrice = parseFloat(bCard.dataset.price);
+            const aRating = parseFloat(aCard.dataset.rating);
+            const bRating = parseFloat(bCard.dataset.rating);
+
+            switch (sortType) {
+              case "price-asc":
+                return aPrice - bPrice;
+              case "price-desc":
+                return bPrice - aPrice;
+              case "rating-asc":
+                return aRating - bRating;
+              case "rating-desc":
+                return bRating - aRating;
+            }
+          });
+
+          container.innerHTML = "";
+          cards.forEach((card) => container.appendChild(card));
+        });
+    </script>
   </body>
 </html>
