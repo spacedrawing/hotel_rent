@@ -56,7 +56,7 @@ def index():
         else:
             slov["rating"] = round(sum(i["rating"] for i in reviews) / len(reviews), 1)
         price = sorted([i.__dict__ for i in db_sess.query(Room).filter(Room.hotel_id == slov["id"]).all()],
-            key=lambda x: x["price"])
+                       key=lambda x: x["price"])
         slov["price"] = price[0]["price"]
 
     return render_template("index.html", list_hotel_cards=list_hotel_cards)
@@ -87,6 +87,14 @@ def search():
 @app.route("/auth")
 def auth():
     return render_template("auth.html")
+
+
+@app.route("/kapi-team")
+def kapi():
+    images = [
+        url_for("static", filename=f"images/kapi-team.jpg"),
+        url_for("static", filename=f"images/kapi.png")]
+    return render_template("kapi.html", images=images)
 
 
 @app.route("/register", methods=["POST", "GET"])
